@@ -1,0 +1,125 @@
+Arrays
+12/14/2024
+You can store multiple variables of the same type in an array data structure. You declare an array by specifying the type of its elements. If you want the array to store elements of any type, you can specify object as its type. In the unified type system of C#, all types, predefined and user-defined, reference types and value types, inherit directly or indirectly from Object.
+
+C#
+
+Copy
+type[] arrayName;
+An array is a reference type, so the array can be a nullable reference type. The element types might be reference types, so an array can be declared to hold nullable reference types. The following example declarations show the different syntax used to declare the nullability of the array or the elements:
+
+C#
+
+Copy
+type?[] arrayName; // non nullable array of nullable element types.
+type[]? arrayName; // nullable array of non-nullable element types.
+type?[]? arrayName; // nullable array of nullable element types.
+Uninitialized elements in an array are set to the default value for that type:
+
+C#
+
+Copy
+int[] numbers = new int[10]; // All values are 0
+string[] messages = new string[10]; // All values are null.
+ Important
+
+In the preceding example, even though the type is string[], an array of non-nullable strings, the default value for each element is null. The best way to initialize an array to non-null values is to use a collection expressions.
+
+An array has the following properties:
+
+An array can be single-dimensional, multidimensional, or jagged.
+The number of dimensions are set when an array variable is declared. The length of each dimension is established when the array instance is created. These values can't be changed during the lifetime of the instance.
+A jagged array is an array of arrays, and each member array has the default value of null.
+Arrays are zero indexed: an array with n elements is indexed from 0 to n-1.
+Array elements can be of any type, including an array type.
+Array types are reference types derived from the abstract base type Array. All arrays implement IList and IEnumerable. You can use the foreach statement to iterate through an array. Single-dimensional arrays also implement IList<T> and IEnumerable<T>.
+The elements of an array can be initialized to known values when the array is created. Beginning with C# 12, all of the collection types can be initialized using a Collection expression. Elements that aren't initialized are set to the default value. The default value is the 0-bit pattern. All reference types (including non-nullable types), have the values null. All value types have the 0-bit patterns. That means the Nullable<T>.HasValue property is false and the Nullable<T>.Value property is undefined. In the .NET implementation, the Value property throws an exception.
+
+The following example creates single-dimensional, multidimensional, and jagged arrays:
+
+C#
+
+Copy
+// Declare a single-dimensional array of 5 integers.
+int[] array1 = new int[5];
+
+// Declare and set array element values.
+int[] array2 = [1, 2, 3, 4, 5, 6];
+
+// Declare a two dimensional array.
+int[,] multiDimensionalArray1 = new int[2, 3];
+
+// Declare and set array element values.
+int[,] multiDimensionalArray2 = { { 1, 2, 3 }, { 4, 5, 6 } };
+
+// Declare a jagged array.
+int[][] jaggedArray = new int[6][];
+
+// Set the values of the first array in the jagged array structure.
+jaggedArray[0] = [1, 2, 3, 4];
+ Important
+
+Many of the examples in this article use collection expressions (which use square brackets) to initialize the arrays. Collection expressions were first introduced in C# 12, which shipped with .NET 8. If you can't upgrade to C# 12 yet, use { and } to initialize the arrays instead.
+
+C#
+
+Copy
+// Collection expressions:
+int[] array = [1, 2, 3, 4, 5, 6];
+// Alternative syntax:
+int[] array2 = {1, 2, 3, 4, 5, 6};
+Single-dimensional arrays
+A single-dimensional array is a sequence of like elements. You access an element via its index. The index is its ordinal position in the sequence. The first element in the array is at index 0. You create a single-dimensional array using the new operator specifying the array element type and the number of elements. The following example declares and initializes single-dimensional arrays:
+
+C#
+
+Copy
+int[] array = new int[5];
+string[] weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+Console.WriteLine(weekDays[0]);
+Console.WriteLine(weekDays[1]);
+Console.WriteLine(weekDays[2]);
+Console.WriteLine(weekDays[3]);
+Console.WriteLine(weekDays[4]);
+Console.WriteLine(weekDays[5]);
+Console.WriteLine(weekDays[6]);
+
+/*Output:
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+*/
+The first declaration declares an uninitialized array of five integers, from array[0] to array[4]. The elements of the array are initialized to the default value of the element type, 0 for integers. The second declaration declares an array of strings and initializes all seven values of that array. A series of Console.WriteLine statements prints all the elements of the weekDay array. For single-dimensional arrays, the foreach statement processes elements in increasing index order, starting with index 0 and ending with index Length - 1.
+
+Pass single-dimensional arrays as arguments
+You can pass an initialized single-dimensional array to a method. In the following example, an array of strings is initialized and passed as an argument to a DisplayArray method for strings. The method displays the elements of the array. Next, the ChangeArray method reverses the array elements, and then the ChangeArrayElements method modifies the first three elements of the array. After each method returns, the DisplayArray method shows that passing an array by value doesn't prevent changes to the array elements.
+
+C#
+
+Copy
+class ArrayExample
+{
+    static void DisplayArray(string[] arr) => Console.WriteLine(string.Join(" ", arr));
+
+    // Change the array by reversing its elements.
+    static void ChangeArray(string[] arr) => Array.Reverse(arr);
+
+    static void ChangeArrayElements(string[] arr)
+    {
+        // Change the value of the first three array elements.
+        arr[0] = "Mon";
+        arr[1] = "Wed";
+        arr[2] = "Fri";
+    }
+
+    static void Main()
+    {
+        // Declare and initialize an array.
+        string[] weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        // Display the array elements.
+        DisplayArray(weekDays);
